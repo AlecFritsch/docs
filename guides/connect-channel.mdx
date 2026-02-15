@@ -1,0 +1,103 @@
+---
+title: "Connect a Channel"
+description: "Connect your agent to WhatsApp, Telegram, Discord, and other platforms."
+---
+
+## Overview
+
+Each agent can connect to multiple messaging channels simultaneously. This guide covers setup for the most popular platforms.
+
+## WhatsApp
+
+WhatsApp uses the Baileys library for Web-based connections.
+
+<Steps>
+  <Step title="Open Agent Channels">
+    Navigate to your agent's **Channels** tab.
+  </Step>
+  <Step title="Add WhatsApp">
+    Click **Connect Channel > WhatsApp**.
+  </Step>
+  <Step title="Scan QR Code">
+    A QR code will appear. Open WhatsApp on your phone, go to **Linked Devices**, and scan the QR code.
+  </Step>
+  <Step title="Verify Connection">
+    Once scanned, the connection status will change to **Connected**. Send a test message to verify.
+  </Step>
+</Steps>
+
+<Warning>
+  WhatsApp Web sessions can expire. If the agent disconnects, you may need to re-scan the QR code.
+</Warning>
+
+## Telegram
+
+<Steps>
+  <Step title="Create a Bot">
+    Message [@BotFather](https://t.me/BotFather) on Telegram and use `/newbot` to create a bot. Copy the bot token.
+  </Step>
+  <Step title="Add Telegram Channel">
+    In your agent's **Channels** tab, click **Connect Channel > Telegram**.
+  </Step>
+  <Step title="Enter Bot Token">
+    Paste the bot token from BotFather.
+  </Step>
+  <Step title="Configure DM Policy">
+    Set the DM policy:
+    - **Pairing** — Users must enter a pairing code
+    - **Allowlist** — Only specific Telegram user IDs
+    - **Open** — Anyone can message the bot
+  </Step>
+</Steps>
+
+## Discord
+
+<Steps>
+  <Step title="Create a Bot Application">
+    Go to the [Discord Developer Portal](https://discord.com/developers/applications), create a new application, and add a bot.
+  </Step>
+  <Step title="Copy Bot Token">
+    Under the **Bot** section, copy the bot token.
+  </Step>
+  <Step title="Invite Bot to Server">
+    Generate an invite URL with the required permissions (Send Messages, Read Message History, etc.) and add the bot to your server.
+  </Step>
+  <Step title="Connect in Havoc">
+    In your agent's **Channels** tab, click **Connect Channel > Discord** and paste the bot token.
+  </Step>
+</Steps>
+
+## Slack
+
+<Steps>
+  <Step title="Create Slack App">
+    Go to [api.slack.com/apps](https://api.slack.com/apps) and create a new app.
+  </Step>
+  <Step title="Enable Socket Mode">
+    Enable **Socket Mode** and generate an app-level token.
+  </Step>
+  <Step title="Add Bot Scopes">
+    Under **OAuth & Permissions**, add scopes: `chat:write`, `im:history`, `im:read`, `im:write`.
+  </Step>
+  <Step title="Install to Workspace">
+    Install the app to your workspace and copy the Bot User OAuth Token.
+  </Step>
+  <Step title="Connect in Havoc">
+    Enter the bot token and app-level token in Havoc.
+  </Step>
+</Steps>
+
+## Other Channels
+
+| Channel | Setup |
+|---------|-------|
+| **Signal** | Requires Signal CLI with a registered phone number |
+| **iMessage** | Requires a macOS node with imsg CLI |
+| **Google Chat** | Google Workspace service account |
+| **Mattermost** | Plugin installation in your Mattermost server |
+| **MS Teams** | Plugin installation via the Havoc MS Teams plugin |
+| **LINE** | Channel access token from LINE Developers |
+
+<Card title="Next: Configure a Provider" icon="arrow-right" href="/guides/configure-provider">
+  Set up AI model providers for your agents.
+</Card>

@@ -1,0 +1,106 @@
+---
+title: "Create an Agent"
+description: "Step-by-step guide to creating and deploying an AI agent."
+---
+
+## Overview
+
+This guide walks you through creating an agent from scratch or from a template.
+
+## Option A: Create from Template
+
+Templates are the fastest way to get started. They pre-configure workspace files, model selection, and tool policy.
+
+<Steps>
+  <Step title="Open Templates">
+    From the dashboard, click **+ New Agent** and select **Browse Templates**.
+  </Step>
+  <Step title="Choose Template">
+    Select a template that matches your use case:
+    - **Customer Support** — FAQ handling, ticket routing, escalation
+    - **Sales Agent** — Lead qualification, appointment booking
+    - **Research Agent** — Web research, report generation
+    - **Personal Assistant** — Calendar, reminders, task management
+  </Step>
+  <Step title="Customize">
+    Modify the agent name, model, and workspace files as needed.
+  </Step>
+  <Step title="Deploy">
+    Click **Deploy**. Your agent will be running in seconds.
+  </Step>
+</Steps>
+
+## Option B: Create from Scratch
+
+<Steps>
+  <Step title="New Blank Agent">
+    Click **+ New Agent** and select **Blank Agent**.
+  </Step>
+  <Step title="Basic Configuration">
+    Set the following:
+    - **Name** — A descriptive name for the agent
+    - **Model** — Select primary model and optional fallbacks
+    - **Description** — Brief description of the agent's purpose
+  </Step>
+  <Step title="Configure Workspace">
+    Edit the workspace files to define agent behavior:
+
+    **AGENTS.md** — Operating instructions and priorities
+
+    ```markdown
+    # Instructions
+    You are a customer support agent for Acme Corp.
+    - Be helpful and professional
+    - Escalate complex issues to human support
+    ```
+
+    **SOUL.md** — Persona and communication style
+
+    ```markdown
+    # Persona
+    Friendly, professional, and efficient.
+    Use simple language. Be empathetic.
+    ```
+  </Step>
+  <Step title="Tool Policy">
+    Configure which tools the agent can use:
+    - **Web Search** — Enable for agents that need current information
+    - **Browser** — Enable for interactive web research
+    - **File System** — Enable for agents that manage documents
+    - **Exec** — Enable with caution for agents that run commands
+  </Step>
+  <Step title="Deploy">
+    Click **Deploy** to spin up the agent's Docker container.
+  </Step>
+</Steps>
+
+## Agent Settings
+
+After creation, you can configure additional settings:
+
+| Setting | Description |
+|---------|-------------|
+| **Heartbeat** | Periodic check-in interval (default: 30 minutes) |
+| **Sandbox** | Docker sandboxing mode (off, non-main, all) |
+| **Block Streaming** | Send responses as streaming blocks |
+| **Thinking Level** | Reasoning depth (off, minimal, low, medium, high) |
+| **Session Scope** | DM session isolation (main, per-peer, per-channel-peer) |
+
+## API: Create Agent
+
+You can also create agents via the API:
+
+```bash
+curl -X POST https://usehavoc.com/api/agents \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "Support Agent",
+    "model": "anthropic/claude-sonnet-4-5",
+    "templateId": "customer-support"
+  }'
+```
+
+<Card title="Next: Connect a Channel" icon="arrow-right" href="/guides/connect-channel">
+  Connect your agent to WhatsApp, Telegram, or Discord.
+</Card>

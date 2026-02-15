@@ -1,97 +1,65 @@
 ---
-title: "Introduction"
-description: "Welcome to the new home for your documentation"
+title: "Havoc Documentation"
+description: "Deploy, manage, and scale autonomous AI agents for your clients."
 ---
 
-## Setting up
+## What is Havoc?
 
-Get your documentation site up and running in minutes.
+Havoc is a SaaS platform for AI agencies that deploy and manage **autonomous AI agents** for their clients. Built on [OpenClaw](https://docs.openclaw.ai), each agent runs in its own secure Docker container with gateway access to WhatsApp, Telegram, Discord, Slack, and more.
 
-<Card
-  title="Start here"
-  icon="rocket"
-  href="/quickstart"
-  horizontal
->
-  Follow our three step quickstart guide.
-</Card>
-
-## Make it yours
-
-Design a docs site that looks great and empowers your users.
-
-<Columns cols={2}>
-  <Card
-    title="Edit locally"
-    icon="pen-to-square"
-    href="/development"
-  >
-    Edit your docs locally and preview them in real time.
+<CardGroup cols={2}>
+  <Card title="Quickstart" icon="rocket" href="/quickstart">
+    Deploy your first AI agent in under 5 minutes.
   </Card>
-  <Card
-    title="Customize your site"
-    icon="palette"
-    href="/essentials/settings"
-  >
-    Customize the design and colors of your site to match your brand.
+  <Card title="What are Agents?" icon="robot" href="/concepts/agents">
+    Understand the core building block of Havoc.
   </Card>
-    <Card
-    title="Set up navigation"
-    icon="map"
-    href="/essentials/navigation"
-  >
-    Organize your docs to help users find what they need and succeed with your product.
+  <Card title="Channels" icon="message" href="/concepts/channels">
+    Connect agents to WhatsApp, Telegram, Discord, and more.
   </Card>
-  <Card
-    title="API documentation"
-    icon="terminal"
-    href="/api-reference/introduction"
-  >
-    Auto-generate API documentation from OpenAPI specifications.
+  <Card title="API Reference" icon="code" href="/api-reference">
+    Full REST API documentation with 80+ endpoints.
   </Card>
-</Columns>
+</CardGroup>
 
-## Create beautiful pages
+## Core Concepts
 
-Everything you need to create world-class documentation.
+| Concept | Description |
+|---|---|
+| **Agent** | An autonomous AI entity running in a secure Docker container with its own OpenClaw gateway. |
+| **Channel** | A messaging platform connection (WhatsApp, Telegram, Discord, Slack, Signal, etc.). |
+| **Provider** | An AI model provider (Anthropic, OpenAI, Google, etc.) with API key management. |
+| **Workspace** | Agent configuration files (AGENTS.md, SOUL.md, TOOLS.md, IDENTITY.md, etc.). |
+| **Session** | A conversation thread between a user and an agent. |
+| **Template** | Pre-built agent configurations for common use cases. |
 
-<Columns cols={2}>
-  <Card
-    title="Write with MDX"
-    icon="pen-fancy"
-    href="/essentials/markdown"
-  >
-    Use MDX to style your docs pages.
-  </Card>
-  <Card
-    title="Code samples"
-    icon="code"
-    href="/essentials/code"
-  >
-    Add sample code to demonstrate how to use your product.
-  </Card>
-  <Card
-    title="Images"
-    icon="image"
-    href="/essentials/images"
-  >
-    Display images and other media.
-  </Card>
-  <Card
-    title="Reusable snippets"
-    icon="recycle"
-    href="/essentials/reusable-snippets"
-  >
-    Write once and reuse across your docs.
-  </Card>
-</Columns>
+## Architecture
 
-## Need inspiration?
+```
+Your Clients
+    |
+    v
+[ WhatsApp / Telegram / Discord / Slack / ... ]
+    |
+    v
+[ Havoc Platform ]
+    |
+    v
+[ Agent Container 1 ] [ Agent Container 2 ] [ Agent Container N ]
+    |                       |                       |
+    v                       v                       v
+[ OpenClaw Gateway ]  [ OpenClaw Gateway ]  [ OpenClaw Gateway ]
+```
 
-<Card
-  title="See complete examples"
-  icon="stars"
-  href="https://mintlify.com/customers"
->
-  Browse our showcase of exceptional documentation sites.
-</Card>
+Each agent is fully isolated in its own Docker container with:
+- Dedicated OpenClaw gateway on a unique port
+- Per-agent workspace, memory, and session state
+- Independent channel connections and provider configuration
+
+## Plans
+
+| Plan | Agents | Channels | Price |
+|------|--------|----------|-------|
+| **Starter** | 3 | 5 | EUR 99/month |
+| **Professional** | 10 | Unlimited | EUR 299/month |
+| **Enterprise** | Custom | Custom | Contact us |

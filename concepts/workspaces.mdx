@@ -1,0 +1,101 @@
+---
+title: "Workspaces"
+description: "Agent workspace files define behavior, persona, and memory."
+---
+
+## What is a Workspace?
+
+Every agent in Havoc has a **workspace** — a collection of markdown files that define the agent's behavior, persona, tools, and memory. These files are injected into the agent's context on every interaction.
+
+## Workspace Files
+
+| File | Purpose | Auto-injected |
+|------|---------|---------------|
+| **AGENTS.md** | Operating instructions, memory rules, priorities | Yes |
+| **SOUL.md** | Persona, tone, communication style, boundaries | Yes |
+| **TOOLS.md** | Local tool notes and conventions | Yes |
+| **IDENTITY.md** | Agent name, vibe, emoji | Yes |
+| **USER.md** | User profile, preferences, how to address them | Yes |
+| **MEMORY.md** | Curated long-term memory (main session only) | Yes |
+| **HEARTBEAT.md** | Optional heartbeat checklist | Yes |
+| **BOOTSTRAP.md** | One-time first-run ritual (deleted after use) | Yes |
+
+<Warning>
+  Each workspace file is limited to **20,000 characters** by default (`bootstrapMaxChars`). Keep files concise and focused.
+</Warning>
+
+## AGENTS.md — The Brain
+
+This is the most important file. It defines how your agent operates:
+
+```markdown
+# Operating Instructions
+
+## Priority 1: Customer Support
+- Always greet users by name if known
+- Escalate billing issues to human support
+- Never share internal system details
+
+## Priority 2: Memory
+- Save important user preferences to MEMORY.md
+- Log daily interactions to memory/YYYY-MM-DD.md
+
+## Priority 3: Tools
+- Use web_search for current information
+- Use browser for interactive research
+- Never execute destructive commands
+```
+
+## SOUL.md — The Persona
+
+Define how your agent communicates:
+
+```markdown
+# Persona
+
+You are Alex, a friendly and professional customer support agent.
+
+## Tone
+- Warm but efficient
+- Use simple language, avoid jargon
+- Be empathetic when users are frustrated
+
+## Boundaries
+- Never pretend to be human
+- Always disclose you are an AI assistant
+- Redirect medical/legal questions to professionals
+```
+
+## Memory System
+
+Havoc agents have a two-tier memory system:
+
+### MEMORY.md (Curated)
+- Injected into every conversation
+- Contains important facts, preferences, and notes
+- Managed by the agent or manually edited
+
+### memory/YYYY-MM-DD.md (Daily Logs)
+- NOT auto-injected (retrieved on demand via `memory_search`)
+- Contains timestamped daily interaction logs
+- Searchable via vector memory search
+
+### Vector Memory Search
+
+Havoc builds a vector index over all memory files for semantic search. This allows agents to recall relevant information even from old daily logs.
+
+## Editing Workspace Files
+
+You can edit workspace files in three ways:
+
+1. **Havoc Dashboard** — Visual editor with live preview
+2. **API** — `PUT /api/agents/:agentId/workspace/:filename`
+3. **Agent Self-Edit** — The agent can modify its own workspace files using the `write` tool
+
+<Tip>
+  Start with a template — it pre-configures all workspace files for common use cases like customer support, sales, or research.
+</Tip>
+
+<Card title="Guide: Create an Agent" icon="arrow-right" href="/guides/create-agent">
+  Create an agent with a fully configured workspace.
+</Card>

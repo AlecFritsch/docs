@@ -1,0 +1,507 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Havoc API",
+    "description": "The Autonomous AI Agent Platform — Full API Reference.\n\nAuthenticate with either a Clerk JWT (frontend) or a Havoc API Key (`agx_*`, Pro+ plan required).",
+    "version": "1.0.0",
+    "contact": {
+      "name": "Havoc",
+      "url": "https://usehavoc.com"
+    }
+  },
+  "servers": [
+    { "url": "https://api.usehavoc.com", "description": "Production" },
+    { "url": "http://localhost:8080", "description": "Development" }
+  ],
+  "tags": [
+    { "name": "Health", "description": "Service health checks" },
+    { "name": "Agents", "description": "Agent lifecycle management (CRUD, pause, resume, delete)" },
+    { "name": "Agent Configuration", "description": "Full agent configuration (80+ fields)" },
+    { "name": "Agent Channels", "description": "Per-agent channel connections" },
+    { "name": "Agent Team", "description": "Agent team member management" },
+    { "name": "Agent Analytics", "description": "Per-agent analytics and metrics" },
+    { "name": "Sessions", "description": "Chat sessions and messaging" },
+    { "name": "Channels", "description": "Global channel management" },
+    { "name": "Gateway", "description": "Live agent gateway — RPC proxy to OpenClaw container" },
+    { "name": "Workspace", "description": "Agent workspace files (AGENTS.md, SOUL.md, etc.)" },
+    { "name": "Memory", "description": "Agent memory management and search" },
+    { "name": "Skills", "description": "ClawHub skill marketplace — browse, install, manage" },
+    { "name": "Workflows", "description": "Lobster workflow pipelines" },
+    { "name": "Sub-Agents", "description": "Multi-agent routing and sub-agent management" },
+    { "name": "Analytics", "description": "Dashboard-level usage and performance metrics" },
+    { "name": "Organization", "description": "Organization settings and team members" },
+    { "name": "Billing", "description": "Subscription, usage, and invoices" },
+    { "name": "Users", "description": "User profile and API key management" },
+    { "name": "Providers", "description": "AI model provider management (API keys, models)" },
+    { "name": "Templates", "description": "Agent templates — browse and deploy" },
+    { "name": "Webhooks", "description": "User webhook management and Clerk webhooks" },
+    { "name": "Integrations", "description": "Third-party integration connections" },
+    { "name": "Support", "description": "Support ticket system" },
+    { "name": "AI Helpers", "description": "AI-powered assistants (Agent Architect, Support Suggest, Analytics Insights)" },
+    { "name": "Operations", "description": "Operations dashboard overview" },
+    { "name": "Activity", "description": "Activity feed and event logging" },
+    { "name": "Logs", "description": "System and agent log queries" }
+  ],
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "description": "Clerk JWT Token — obtained from the Havoc frontend via Clerk authentication."
+      },
+      "apiKeyAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "agx_*",
+        "description": "Havoc API Key — generated in Settings > API Keys. Requires Pro plan or higher."
+      }
+    }
+  },
+  "security": [
+    { "bearerAuth": [] },
+    { "apiKeyAuth": [] }
+  ],
+  "paths": {
+    "/health": {
+      "get": {
+        "tags": ["Health"],
+        "summary": "Health Check",
+        "description": "Returns the current health status of the Havoc API.",
+        "operationId": "getHealth",
+        "responses": {
+          "200": {
+            "description": "Service is healthy",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": { "type": "string", "example": "ok" },
+                    "timestamp": { "type": "string", "format": "date-time" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/agents": {
+      "get": {
+        "tags": ["Agents"],
+        "summary": "List Agents",
+        "description": "Returns all agents in the current organization.",
+        "operationId": "listAgents",
+        "security": [{ "bearerAuth": [] }, { "apiKeyAuth": [] }],
+        "responses": {
+          "200": {
+            "description": "List of agents",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "agents": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": { "type": "string" },
+                          "name": { "type": "string" },
+                          "status": { "type": "string", "enum": ["created", "deploying", "running", "paused", "error"] },
+                          "model": { "type": "string" },
+                          "createdAt": { "type": "string", "format": "date-time" }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["Agents"],
+        "summary": "Create Agent",
+        "description": "Create a new agent, optionally from a template.",
+        "operationId": "createAgent",
+        "security": [{ "bearerAuth": [] }, { "apiKeyAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["name"],
+                "properties": {
+                  "name": { "type": "string", "description": "Agent display name" },
+                  "model": { "type": "string", "description": "Primary model identifier", "example": "anthropic/claude-sonnet-4-5" },
+                  "templateId": { "type": "string", "description": "Optional template ID to base the agent on" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Agent created successfully"
+          }
+        }
+      }
+    },
+    "/api/agents/{agentId}": {
+      "get": {
+        "tags": ["Agents"],
+        "summary": "Get Agent",
+        "description": "Get details of a specific agent.",
+        "operationId": "getAgent",
+        "security": [{ "bearerAuth": [] }, { "apiKeyAuth": [] }],
+        "parameters": [
+          { "name": "agentId", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "200": { "description": "Agent details" },
+          "404": { "description": "Agent not found" }
+        }
+      },
+      "patch": {
+        "tags": ["Agents"],
+        "summary": "Update Agent",
+        "description": "Update agent configuration.",
+        "operationId": "updateAgent",
+        "security": [{ "bearerAuth": [] }, { "apiKeyAuth": [] }],
+        "parameters": [
+          { "name": "agentId", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": { "type": "string" },
+                  "model": { "type": "string" },
+                  "status": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Agent updated" }
+        }
+      },
+      "delete": {
+        "tags": ["Agents"],
+        "summary": "Delete Agent",
+        "description": "Delete an agent and its container.",
+        "operationId": "deleteAgent",
+        "security": [{ "bearerAuth": [] }, { "apiKeyAuth": [] }],
+        "parameters": [
+          { "name": "agentId", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "200": { "description": "Agent deleted" }
+        }
+      }
+    },
+    "/api/agents/{agentId}/channels": {
+      "get": {
+        "tags": ["Agent Channels"],
+        "summary": "List Agent Channels",
+        "description": "Get all channel connections for an agent.",
+        "operationId": "listAgentChannels",
+        "security": [{ "bearerAuth": [] }, { "apiKeyAuth": [] }],
+        "parameters": [
+          { "name": "agentId", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "200": { "description": "List of channel connections" }
+        }
+      }
+    },
+    "/api/agents/{agentId}/config": {
+      "get": {
+        "tags": ["Agent Configuration"],
+        "summary": "Get Agent Configuration",
+        "description": "Get the full configuration object for an agent (80+ fields).",
+        "operationId": "getAgentConfig",
+        "security": [{ "bearerAuth": [] }, { "apiKeyAuth": [] }],
+        "parameters": [
+          { "name": "agentId", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "200": { "description": "Full agent configuration" }
+        }
+      },
+      "put": {
+        "tags": ["Agent Configuration"],
+        "summary": "Update Agent Configuration",
+        "description": "Update the full agent configuration.",
+        "operationId": "updateAgentConfig",
+        "security": [{ "bearerAuth": [] }, { "apiKeyAuth": [] }],
+        "parameters": [
+          { "name": "agentId", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "200": { "description": "Configuration updated" }
+        }
+      }
+    },
+    "/api/agents/{agentId}/workspace/{filename}": {
+      "get": {
+        "tags": ["Workspace"],
+        "summary": "Get Workspace File",
+        "description": "Read a workspace file (AGENTS.md, SOUL.md, etc.).",
+        "operationId": "getWorkspaceFile",
+        "security": [{ "bearerAuth": [] }, { "apiKeyAuth": [] }],
+        "parameters": [
+          { "name": "agentId", "in": "path", "required": true, "schema": { "type": "string" } },
+          { "name": "filename", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "200": { "description": "File content" }
+        }
+      },
+      "put": {
+        "tags": ["Workspace"],
+        "summary": "Update Workspace File",
+        "description": "Write content to a workspace file.",
+        "operationId": "updateWorkspaceFile",
+        "security": [{ "bearerAuth": [] }, { "apiKeyAuth": [] }],
+        "parameters": [
+          { "name": "agentId", "in": "path", "required": true, "schema": { "type": "string" } },
+          { "name": "filename", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "200": { "description": "File updated" }
+        }
+      }
+    },
+    "/api/sessions": {
+      "get": {
+        "tags": ["Sessions"],
+        "summary": "List Sessions",
+        "description": "List all sessions for the current organization.",
+        "operationId": "listSessions",
+        "security": [{ "bearerAuth": [] }, { "apiKeyAuth": [] }],
+        "responses": {
+          "200": { "description": "List of sessions" }
+        }
+      }
+    },
+    "/api/sessions/{sessionId}/messages": {
+      "get": {
+        "tags": ["Sessions"],
+        "summary": "Get Session Messages",
+        "description": "Get the message history for a session.",
+        "operationId": "getSessionMessages",
+        "security": [{ "bearerAuth": [] }, { "apiKeyAuth": [] }],
+        "parameters": [
+          { "name": "sessionId", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "200": { "description": "Message history" }
+        }
+      },
+      "post": {
+        "tags": ["Sessions"],
+        "summary": "Send Message",
+        "description": "Send a message to a session.",
+        "operationId": "sendMessage",
+        "security": [{ "bearerAuth": [] }, { "apiKeyAuth": [] }],
+        "parameters": [
+          { "name": "sessionId", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["text"],
+                "properties": {
+                  "text": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Message sent" }
+        }
+      }
+    },
+    "/api/providers": {
+      "get": {
+        "tags": ["Providers"],
+        "summary": "List Providers",
+        "description": "List all configured AI model providers.",
+        "operationId": "listProviders",
+        "security": [{ "bearerAuth": [] }, { "apiKeyAuth": [] }],
+        "responses": {
+          "200": { "description": "List of providers" }
+        }
+      },
+      "post": {
+        "tags": ["Providers"],
+        "summary": "Add Provider",
+        "description": "Configure a new AI model provider with an API key.",
+        "operationId": "addProvider",
+        "security": [{ "bearerAuth": [] }, { "apiKeyAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["provider", "apiKey"],
+                "properties": {
+                  "provider": { "type": "string", "example": "anthropic" },
+                  "apiKey": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Provider added" }
+        }
+      }
+    },
+    "/api/organization": {
+      "get": {
+        "tags": ["Organization"],
+        "summary": "Get Organization",
+        "description": "Get the current organization details.",
+        "operationId": "getOrganization",
+        "security": [{ "bearerAuth": [] }, { "apiKeyAuth": [] }],
+        "responses": {
+          "200": { "description": "Organization details" }
+        }
+      }
+    },
+    "/api/organization/members": {
+      "get": {
+        "tags": ["Organization"],
+        "summary": "List Members",
+        "description": "List all organization members.",
+        "operationId": "listMembers",
+        "security": [{ "bearerAuth": [] }, { "apiKeyAuth": [] }],
+        "responses": {
+          "200": { "description": "List of members" }
+        }
+      }
+    },
+    "/api/billing/usage": {
+      "get": {
+        "tags": ["Billing"],
+        "summary": "Get Usage",
+        "description": "Get current usage against plan limits.",
+        "operationId": "getUsage",
+        "security": [{ "bearerAuth": [] }, { "apiKeyAuth": [] }],
+        "responses": {
+          "200": { "description": "Usage data" }
+        }
+      }
+    },
+    "/api/analytics": {
+      "get": {
+        "tags": ["Analytics"],
+        "summary": "Get Analytics",
+        "description": "Get dashboard-level analytics and metrics.",
+        "operationId": "getAnalytics",
+        "security": [{ "bearerAuth": [] }, { "apiKeyAuth": [] }],
+        "responses": {
+          "200": { "description": "Analytics data" }
+        }
+      }
+    },
+    "/api/templates": {
+      "get": {
+        "tags": ["Templates"],
+        "summary": "List Templates",
+        "description": "Browse available agent templates.",
+        "operationId": "listTemplates",
+        "security": [{ "bearerAuth": [] }, { "apiKeyAuth": [] }],
+        "responses": {
+          "200": { "description": "List of templates" }
+        }
+      }
+    },
+    "/api/users/me": {
+      "get": {
+        "tags": ["Users"],
+        "summary": "Get Current User",
+        "description": "Get the authenticated user's profile.",
+        "operationId": "getCurrentUser",
+        "security": [{ "bearerAuth": [] }, { "apiKeyAuth": [] }],
+        "responses": {
+          "200": { "description": "User profile" }
+        }
+      }
+    },
+    "/api/users/api-keys": {
+      "get": {
+        "tags": ["Users"],
+        "summary": "List API Keys",
+        "description": "List all API keys for the current user.",
+        "operationId": "listApiKeys",
+        "security": [{ "bearerAuth": [] }, { "apiKeyAuth": [] }],
+        "responses": {
+          "200": { "description": "List of API keys" }
+        }
+      },
+      "post": {
+        "tags": ["Users"],
+        "summary": "Create API Key",
+        "description": "Generate a new API key (agx_* format). Requires Pro plan.",
+        "operationId": "createApiKey",
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["name"],
+                "properties": {
+                  "name": { "type": "string", "description": "A label for the API key" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "API key created. The key is returned once and cannot be retrieved again." }
+        }
+      }
+    },
+    "/api/activity": {
+      "get": {
+        "tags": ["Activity"],
+        "summary": "Get Activity Feed",
+        "description": "Get the activity event feed for the organization.",
+        "operationId": "getActivity",
+        "security": [{ "bearerAuth": [] }, { "apiKeyAuth": [] }],
+        "responses": {
+          "200": { "description": "Activity events" }
+        }
+      }
+    },
+    "/api/logs": {
+      "get": {
+        "tags": ["Logs"],
+        "summary": "Query Logs",
+        "description": "Query system and agent logs.",
+        "operationId": "queryLogs",
+        "security": [{ "bearerAuth": [] }, { "apiKeyAuth": [] }],
+        "responses": {
+          "200": { "description": "Log entries" }
+        }
+      }
+    }
+  }
+}

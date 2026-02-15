@@ -1,0 +1,65 @@
+---
+title: "Team Management"
+description: "Invite team members and manage organization roles."
+---
+
+## Overview
+
+Havoc organizations support multiple team members with role-based access control.
+
+## Roles
+
+| Role | Permissions |
+|------|-------------|
+| **Owner** | Full access — billing, members, agents, settings |
+| **Admin** | Manage agents, channels, providers, and team members |
+| **Member** | View and interact with agents, view analytics |
+
+## Invite Team Members
+
+<Steps>
+  <Step title="Open Organization Settings">
+    Go to **Settings > Organization > Members**.
+  </Step>
+  <Step title="Invite">
+    Click **Invite Member**, enter their email address, and select a role.
+  </Step>
+  <Step title="Accept Invitation">
+    The invited member receives an email with a link to join the organization.
+  </Step>
+</Steps>
+
+## Manage Members
+
+From the Members page, you can:
+- **Change roles** — Promote or demote team members
+- **Remove members** — Revoke access immediately
+- **Transfer ownership** — Transfer the owner role to another admin
+
+## API Keys
+
+Team members can generate personal API keys for programmatic access:
+
+<Steps>
+  <Step title="Navigate to API Keys">
+    Go to **Settings > API Keys**.
+  </Step>
+  <Step title="Generate Key">
+    Click **Generate API Key**. The key starts with `agx_` and is shown only once.
+  </Step>
+  <Step title="Use the Key">
+    Include the key in the `Authorization` header:
+    ```bash
+    curl https://usehavoc.com/api/agents \
+      -H "Authorization: Bearer agx_your_api_key"
+    ```
+  </Step>
+</Steps>
+
+<Warning>
+  API keys require a **Professional** plan or higher. Store keys securely — they provide full API access.
+</Warning>
+
+<Card title="Next: Billing" icon="arrow-right" href="/guides/billing">
+  Understand plans, usage, and billing.
+</Card>

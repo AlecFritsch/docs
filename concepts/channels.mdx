@@ -1,0 +1,85 @@
+---
+title: "Channels"
+description: "Connect your agents to WhatsApp, Telegram, Discord, and more."
+---
+
+## What are Channels?
+
+Channels are the messaging platforms that your agents connect to. Each channel provides a bridge between your users and the AI agent.
+
+## Supported Channels
+
+| Channel | Protocol | Setup |
+|---------|----------|-------|
+| **WhatsApp** | Baileys (Web) | QR code scan |
+| **Telegram** | grammY Bot API | Bot token from @BotFather |
+| **Discord** | discord.js | Bot token from Discord Developer Portal |
+| **Slack** | Socket Mode / HTTP | Slack App with Bot Token |
+| **Signal** | Signal CLI | Phone number registration |
+| **iMessage** | imsg CLI (macOS) | macOS node required |
+| **Google Chat** | Google Workspace | Service account |
+| **Mattermost** | Plugin | Plugin installation |
+| **MS Teams** | Plugin | Plugin installation |
+| **LINE** | Messaging API | Channel access token |
+| **Feishu/Lark** | Bot API | App credentials |
+
+## DM Policy
+
+Each channel has a DM (direct message) policy that controls who can message the agent:
+
+| Policy | Behavior |
+|--------|----------|
+| **pairing** (default) | Unknown senders receive a pairing code for approval |
+| **allowlist** | Only senders in the `allowFrom` list can message |
+| **open** | Anyone can message (requires `allowFrom: ["*"]`) |
+| **disabled** | All DMs are ignored |
+
+## Group Policy
+
+For group chats, channels have a separate group policy:
+
+| Policy | Behavior |
+|--------|----------|
+| **open** | All senders in the group are allowed |
+| **allowlist** (default) | Only senders in `groupAllowFrom` |
+| **disabled** | No group chat support |
+
+## Channel Configuration Example
+
+Here is an example Telegram channel configuration:
+
+```json
+{
+  "telegram": {
+    "enabled": true,
+    "botToken": "123456:ABC-DEF...",
+    "dmPolicy": "pairing",
+    "allowFrom": ["tg:123456789"]
+  }
+}
+```
+
+## Per-Agent Channels
+
+Each agent can have its own channel connections. This means:
+- Agent A can be connected to WhatsApp Account 1
+- Agent B can be connected to WhatsApp Account 2
+- Both agents can share the same Telegram bot, routed via bindings
+
+## Media Support
+
+Channels support media attachments:
+
+**Inbound:** Images, audio, video, and documents are received and stored as temp files. Audio is automatically transcribed.
+
+**Outbound:** Agents can send media by including `MEDIA:<path-or-url>` in their response.
+
+| Channel | Image Limit | Audio/Video | Documents |
+|---------|------------|-------------|-----------|
+| WhatsApp | ~6 MB | 16 MB | 100 MB |
+| Telegram | 10 MB | 50 MB | 50 MB |
+| Discord | 25 MB | 25 MB | 25 MB |
+
+<Card title="Guide: Connect a Channel" icon="arrow-right" href="/guides/connect-channel">
+  Step-by-step setup for each channel platform.
+</Card>

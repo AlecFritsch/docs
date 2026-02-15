@@ -1,0 +1,98 @@
+---
+title: "AI Providers"
+description: "Configure AI model providers for your agents."
+---
+
+## What are Providers?
+
+Providers are the AI model services that power your agents. Havoc supports a wide range of providers, from major cloud services to local models.
+
+## Supported Providers
+
+| Provider | Models | Notes |
+|----------|--------|-------|
+| **Anthropic** | Claude Opus 4.6, Claude Sonnet 4.5 | Recommended for most use cases |
+| **OpenAI** | GPT-5.2, GPT-5-mini | Broad capability |
+| **Google** | Gemini 3 Pro, Gemini 3 Flash | Fast and cost-effective |
+| **OpenRouter** | 100+ models | Multi-provider gateway |
+| **xAI** | Grok | Alternative provider |
+| **Groq** | LLaMA, Mixtral | Ultra-fast inference |
+| **Mistral** | Mistral Large, Medium, Small | European provider |
+| **Ollama** | Any local model | Self-hosted, no API key needed |
+| **Together AI** | Open-source models | Cost-effective |
+| **Amazon Bedrock** | Multiple providers | AWS-integrated |
+
+## Built-in Aliases
+
+For convenience, Havoc provides shorthand aliases:
+
+| Alias | Resolves to |
+|-------|-------------|
+| `opus` | anthropic/claude-opus-4-6 |
+| `sonnet` | anthropic/claude-sonnet-4-5 |
+| `gpt` | openai/gpt-5.2 |
+| `gpt-mini` | openai/gpt-5-mini |
+| `gemini` | google/gemini-3-pro-preview |
+| `gemini-flash` | google/gemini-3-flash-preview |
+
+## Model Configuration
+
+Each agent can configure a primary model with fallbacks:
+
+```json
+{
+  "model": {
+    "primary": "anthropic/claude-sonnet-4-5",
+    "fallbacks": ["openai/gpt-5.2"]
+  },
+  "models": {
+    "anthropic/claude-sonnet-4-5": { "alias": "Sonnet" },
+    "openai/gpt-5.2": { "alias": "GPT" }
+  }
+}
+```
+
+If the primary model is unavailable or rate-limited, the agent automatically falls back to the next model in the list.
+
+## Custom Providers
+
+You can connect any OpenAI-compatible endpoint as a custom provider:
+
+```json
+{
+  "providers": {
+    "my-proxy": {
+      "baseUrl": "http://localhost:4000/v1",
+      "apiKey": "your-key",
+      "api": "openai-completions",
+      "models": [
+        {
+          "id": "custom-model",
+          "name": "My Custom Model",
+          "contextWindow": 128000,
+          "maxTokens": 32000
+        }
+      ]
+    }
+  }
+}
+```
+
+Supported API types: `openai-completions`, `openai-responses`, `anthropic-messages`, `google-generative-ai`.
+
+## Thinking & Reasoning
+
+Agents support configurable reasoning levels:
+
+| Level | Description |
+|-------|-------------|
+| `off` | No reasoning |
+| `minimal` | Brief internal reasoning |
+| `low` (default) | Standard reasoning |
+| `medium` | Extended reasoning |
+| `high` | Deep reasoning |
+| `xhigh` | Maximum reasoning (GPT-5.2/Codex only) |
+
+<Card title="Guide: Configure a Provider" icon="arrow-right" href="/guides/configure-provider">
+  Step-by-step provider setup with API key management.
+</Card>

@@ -1,0 +1,83 @@
+---
+title: "Configure a Provider"
+description: "Set up AI model providers with API key management."
+---
+
+## Overview
+
+Providers are the AI services that power your agents. You need at least one configured provider before creating an agent.
+
+## Add a Provider
+
+<Steps>
+  <Step title="Navigate to Providers">
+    Go to **Settings > Providers** in the Havoc dashboard.
+  </Step>
+  <Step title="Select Provider">
+    Choose from the list of supported providers:
+    - Anthropic
+    - OpenAI
+    - Google (Gemini)
+    - OpenRouter
+    - Groq
+    - Mistral
+    - xAI
+    - And more
+  </Step>
+  <Step title="Enter API Key">
+    Paste your API key. All keys are encrypted at rest using AES-256 encryption.
+  </Step>
+  <Step title="Test Connection">
+    Click **Test Connection** to verify the key is valid and the provider is reachable.
+  </Step>
+</Steps>
+
+## Recommended Setup
+
+For the best experience, we recommend configuring at least two providers for fallback:
+
+| Role | Recommended | Why |
+|------|-------------|-----|
+| **Primary** | Anthropic Claude Sonnet 4.5 | Best balance of intelligence, speed, and cost |
+| **Fallback** | OpenAI GPT-5.2 | Reliable alternative with broad capabilities |
+
+## Per-Agent Provider Override
+
+Each agent can override the organization-wide provider settings:
+
+<Steps>
+  <Step title="Open Agent Settings">
+    Navigate to your agent and click **Configuration**.
+  </Step>
+  <Step title="Model Selection">
+    Under **Model**, select a different primary model or add agent-specific fallbacks.
+  </Step>
+  <Step title="Save">
+    Click **Save**. The agent will use its own model configuration instead of the organization default.
+  </Step>
+</Steps>
+
+## API: Manage Providers
+
+```bash
+# List configured providers
+curl https://usehavoc.com/api/providers \
+  -H "Authorization: Bearer YOUR_API_KEY"
+
+# Add a provider
+curl -X POST https://usehavoc.com/api/providers \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "provider": "anthropic",
+    "apiKey": "sk-ant-..."
+  }'
+
+# Test a provider connection
+curl -X POST https://usehavoc.com/api/providers/anthropic/test \
+  -H "Authorization: Bearer YOUR_API_KEY"
+```
+
+<Card title="Next: Team Management" icon="arrow-right" href="/guides/team-management">
+  Invite team members and manage roles.
+</Card>

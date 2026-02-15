@@ -1,0 +1,107 @@
+---
+title: "Agents"
+description: "Understand what agents are and how they work in Havoc."
+---
+
+## What is an Agent?
+
+An agent in Havoc is an **autonomous AI entity** that runs inside a secure Docker container. Each agent has its own [OpenClaw](https://docs.openclaw.ai) gateway, workspace, memory, and channel connections.
+
+Agents can:
+- Respond to messages from any connected channel (WhatsApp, Telegram, Discord, etc.)
+- Execute tools (web search, file operations, browser automation, etc.)
+- Maintain long-term memory across conversations
+- Run scheduled tasks via cron jobs
+- Spawn sub-agents for complex workflows
+
+## Agent Lifecycle
+
+```
+Template (optional)
+    |
+    v
+Create Agent --> Configure --> Deploy --> Running
+                                            |
+                                    [ Pause / Resume / Delete ]
+```
+
+| State | Description |
+|-------|-------------|
+| **Created** | Agent configuration exists but container is not running. |
+| **Deploying** | Docker container is being provisioned. |
+| **Running** | Agent is active and processing messages. |
+| **Paused** | Container is stopped but configuration is preserved. |
+| **Error** | Container failed to start or crashed. |
+
+## Agent Configuration
+
+Each agent has an extensive configuration with 80+ fields, organized into sections:
+
+### Model Configuration
+
+Select the primary AI model and fallbacks:
+
+```json
+{
+  "model": {
+    "primary": "anthropic/claude-sonnet-4-5",
+    "fallbacks": ["openai/gpt-5.2"]
+  }
+}
+```
+
+**Supported providers:** Anthropic, OpenAI, Google, OpenRouter, Groq, Mistral, xAI, Ollama, and many more.
+
+### Workspace Files
+
+Every agent has a workspace with markdown files that define its behavior:
+
+| File | Purpose |
+|------|---------|
+| **AGENTS.md** | Operating instructions, priorities, memory rules |
+| **SOUL.md** | Persona, tone, boundaries |
+| **TOOLS.md** | Local tool notes and conventions |
+| **IDENTITY.md** | Agent name, vibe, emoji |
+| **USER.md** | User profile, how to address the user |
+| **MEMORY.md** | Curated long-term memory |
+
+<Card title="Learn more about Workspaces" icon="folder-open" href="/concepts/workspaces">
+  Deep dive into workspace file structure and best practices.
+</Card>
+
+### Tool Policy
+
+Control which tools the agent can use:
+
+```json
+{
+  "tools": {
+    "allow": [],
+    "deny": ["group:automation"],
+    "elevated": { "enabled": false }
+  }
+}
+```
+
+Tool groups include: `group:runtime`, `group:fs`, `group:web`, `group:ui`, `group:sessions`, `group:memory`, `group:messaging`, `group:automation`, `group:nodes`.
+
+## Templates
+
+Havoc provides pre-built templates for common use cases:
+- **Customer Support Agent** — Handles tickets, FAQs, and escalations
+- **Sales Agent** — Lead qualification and appointment booking
+- **Research Agent** — Web research and report generation
+- **Personal Assistant** — Calendar, reminders, and task management
+
+Templates pre-configure the workspace files, model selection, and tool policy for each use case.
+
+## Multi-Agent
+
+Havoc supports running multiple agents with independent configurations:
+- Each agent has its own Docker container, workspace, and sessions
+- Agents can be routed to different channels via bindings
+- Sub-agents can be spawned for background tasks
+
+<Card title="Guide: Create an Agent" icon="arrow-right" href="/guides/create-agent">
+  Step-by-step guide to creating and deploying your first agent.
+</Card>
