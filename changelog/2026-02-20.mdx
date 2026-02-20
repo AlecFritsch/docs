@@ -1,0 +1,51 @@
+---
+title: "February 20, 2026"
+description: "Channels prod-ready, Live-API, Thinking-Label, TOOLS.md updates, security patches."
+---
+
+## Channels — Prod-Ready & Live-Status
+
+### Live-Status-Polling
+Channel status is now refreshed every 12 seconds when the agent is running and channels are connected. The UI shows real-time connection state and error messages.
+
+### Extended Channel Support
+- **Microsoft Teams** — App ID, App Secret, Tenant ID (optional for single-tenant)
+- **Google Chat** — Service Account JSON
+- **Mattermost** — Server URL and Bot Token
+- **LINE** — Channel Access Token and Channel Secret
+- **Feishu/Lark** — App ID and App Secret
+
+### UX Improvements
+- Loading skeletons instead of plain text
+- Retry button with loading state on load errors
+- ESC key and backdrop click to close modals
+- Async loading states for Disconnect, Approve/Reject, Add Channel, Save Config
+- Credential validation: `tenantId` optional for MS Teams, `appToken` optional for Slack
+- Full i18n (DE/EN) for all channel UI text
+
+### Backend
+- `channels/status` response normalized to a consistent array with `type`, `connected`, `status`, `error`
+- `allowFrom` included in channel status response
+- Gateway reachability detection when agent runs but gateway is unavailable
+
+## Thinking-Label — Generative
+
+The chat "thinking" indicator is now generated dynamically via API instead of hardcoded strings. The backend endpoint `POST /api/ai/generate-thinking-label` produces context-aware labels (e.g. "Wird eingeloggt…", "Suche…") based on the user's last message.
+
+## TOOLS.md — Browser Rule
+
+When users say "im Browser", "browser", or "mit dem Browser", the agent now uses the **browser** tool instead of `web_search`. This rule is applied in the generated workspace TOOLS.md.
+
+## OpenClaw Secure — Docker Patches
+
+Two new build-time patches for containerized deployments:
+
+- **patch-docker-device-local** — Docker bridge IPs (172.16–31) treated as "local" for device pairing; browser tool connects without manual approval
+- **patch-docker-pairing-silent** — First-time device pairing auto-approved for browser tool
+
+## Documentation
+
+- New `docs/CHANNELS.md` in the agenix repo with full channel overview
+- `CHANGELOG.md` added at project root
+- `docs/ARCHITECTURE.md` and `docs/README.md` updated
+- `deploy/README.md` documents `update-all.sh` for full-stack updates
