@@ -18,8 +18,8 @@ Havoc organizations support multiple team members with role-based access control
 ## Invite Team Members
 
 <Steps>
-  <Step title="Open Organization Settings">
-    Go to **Settings > Organization > Members**.
+  <Step title="Open Organization">
+    Go to **Team** in the sidebar (or **Organization**), then **Members**.
   </Step>
   <Step title="Invite">
     Click **Invite Member**, enter their email address, and select a role.
@@ -42,7 +42,7 @@ Team members can generate personal API keys for programmatic access:
 
 <Steps>
   <Step title="Navigate to API Keys">
-    Go to **Settings > API Keys**.
+    Go to **Settings** and open the **API Keys** section.
   </Step>
   <Step title="Generate Key">
     Click **Generate API Key**. The key starts with `agx_` and is shown only once.
@@ -50,14 +50,14 @@ Team members can generate personal API keys for programmatic access:
   <Step title="Use the Key">
     Include the key in the `Authorization` header:
     ```bash
-    curl https://usehavoc.com/api/agents \
+    curl https://api.usehavoc.com/agents \
       -H "Authorization: Bearer agx_your_api_key"
     ```
   </Step>
 </Steps>
 
 <Warning>
-  API keys require a **Professional** plan or higher. Store keys securely — they provide full API access.
+  API keys are available on the **Professional** plan (€75/agent/month). Store keys securely — they provide full API access.
 </Warning>
 
 <Card title="Next: Billing" icon="arrow-right" href="/guides/billing">

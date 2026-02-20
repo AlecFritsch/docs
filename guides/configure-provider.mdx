@@ -61,11 +61,11 @@ Each agent can override the organization-wide provider settings:
 
 ```bash
 # List configured providers
-curl https://usehavoc.com/api/providers \
+curl https://api.usehavoc.com/providers \
   -H "Authorization: Bearer YOUR_API_KEY"
 
 # Add a provider
-curl -X POST https://usehavoc.com/api/providers \
+curl -X POST https://api.usehavoc.com/providers \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -74,7 +74,7 @@ curl -X POST https://usehavoc.com/api/providers \
   }'
 
 # Test a provider connection
-curl -X POST https://usehavoc.com/api/providers/anthropic/test \
+curl -X POST https://api.usehavoc.com/providers/anthropic/test \
   -H "Authorization: Bearer YOUR_API_KEY"
 ```
 

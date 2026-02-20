@@ -16,7 +16,7 @@ WhatsApp uses the Baileys library for Web-based connections.
     Navigate to your agent's **Channels** tab.
   </Step>
   <Step title="Add WhatsApp">
-    Click **Connect Channel > WhatsApp**.
+    Click **+ Add Channel** and select **WhatsApp**.
   </Step>
   <Step title="Scan QR Code">
     A QR code will appear. Open WhatsApp on your phone, go to **Linked Devices**, and scan the QR code.
@@ -37,7 +37,7 @@ WhatsApp uses the Baileys library for Web-based connections.
     Message [@BotFather](https://t.me/BotFather) on Telegram and use `/newbot` to create a bot. Copy the bot token.
   </Step>
   <Step title="Add Telegram Channel">
-    In your agent's **Channels** tab, click **Connect Channel > Telegram**.
+    In your agent's **Channels** tab, click **+ Add Channel** and select **Telegram**.
   </Step>
   <Step title="Enter Bot Token">
     Paste the bot token from BotFather.
@@ -63,7 +63,7 @@ WhatsApp uses the Baileys library for Web-based connections.
     Generate an invite URL with the required permissions (Send Messages, Read Message History, etc.) and add the bot to your server.
   </Step>
   <Step title="Connect in Havoc">
-    In your agent's **Channels** tab, click **Connect Channel > Discord** and paste the bot token.
+    In your agent's **Channels** tab, click **+ Add Channel** and select **Discord**, then paste the bot token.
   </Step>
 </Steps>
 
@@ -91,12 +91,14 @@ WhatsApp uses the Baileys library for Web-based connections.
 
 | Channel | Setup |
 |---------|-------|
+| **WebChat** | Built-in — no credentials. Chat directly in the agent's Workspace tab. |
 | **Signal** | Requires Signal CLI with a registered phone number |
 | **iMessage** | Requires a macOS node with imsg CLI |
-| **Google Chat** | Google Workspace service account |
-| **Mattermost** | Plugin installation in your Mattermost server |
-| **MS Teams** | Plugin installation via the Havoc MS Teams plugin |
-| **LINE** | Channel access token from LINE Developers |
+| **Google Chat** | Service Account JSON from Google Cloud Console |
+| **Mattermost** | Server URL + Bot Token |
+| **MS Teams** | App ID, App Secret, Tenant ID (optional for single-tenant) from Azure App Registration |
+| **LINE** | Channel Access Token + Channel Secret from LINE Developers |
+| **Feishu/Lark** | App ID + App Secret from Feishu open platform |
 
 <Card title="Next: Configure a Provider" icon="arrow-right" href="/guides/configure-provider">
   Set up AI model providers for your agents.
