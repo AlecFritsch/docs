@@ -1,51 +1,44 @@
 ---
 title: "February 22, 2026"
-description: "Introducing Agentic Payments via Sponge Wallet, Team Invitations, Superchat proactive messaging."
+description: "Agents can now pay autonomously — with their own wallet and soon virtual debit card. Plus team invitations and proactive messaging."
 ---
 
 ## Introducing Agentic Payments
 
-Every agent now gets its own crypto wallet — auto-provisioned on deploy via [Sponge](https://paysponge.com). Agents can autonomously pay for services, process checkouts, and manage funds across multiple chains.
+Agents can now handle payments on their own. Every agent gets its own wallet — automatically set up when you deploy. No card details in the chat, no data leaks. The agent pays directly through its secure wallet without sensitive payment information ever appearing in the conversation.
 
-### Supported Chains
-Ethereum, Base, Polygon, Solana, Sepolia, Base-Sepolia, Solana-Devnet, Hyperliquid
+Supports both blockchain-based and traditional payment methods, including a **virtual debit card** (coming soon) — so agents can shop anywhere cards are accepted.
 
 ### Payment Page
-New dedicated `/agents/:id/payment` page in the agent dashboard:
-- **Wallet Card** — Live balance display with chain breakdown and wallet address
-- **Fund Wallet** — Top up via Sponge claim URL or by sending crypto directly to the wallet address
-- **Copy Address** — One-click copy of the agent's wallet address
-- **Transaction History** — Recent transactions with status, chain, and amount
-- **Checkout Log** — All agent-initiated checkouts (e.g. Amazon purchases)
-- **Service Discovery** — Browse x402-compatible services the agent can pay for
+A new dedicated Payment page per agent in the dashboard:
+- **Wallet Card** — Live balance overview across all supported chains
+- **Fund Wallet** — Top up directly from the dashboard
+- **Transaction History** — See every payment the agent has made
+- **Checkout Log** — Track purchases and service payments
+- **Service Discovery** — Browse services the agent can pay for autonomously
 
-### Backend
-- `GET /api/sponge/balance` — Wallet balances per chain
-- `GET /api/sponge/history` — Transaction history
-- `GET /api/sponge/checkouts` — Checkout history
-- `GET /api/sponge/services` — x402 service discovery
-- Wallet auto-registered on agent deploy, reused on redeploy
-- `sponge-wallet` skill auto-enabled in OpenClaw gateway via ClawHub
+### Supported Chains
+Ethereum, Base, Polygon, Solana, Hyperliquid (+ testnets)
 
 ## Team Invitations
 
-Invite team members to your organization via email, powered by Resend.
+Invite team members to your organization via email.
 
 - Send invitations from the Organization page
-- Invitees receive an email with a one-click accept link
+- One-click accept link for invitees
 - Revoke pending invitations at any time
 
-## Superchat Proactive Messaging
+## Proactive Messaging
 
-Agents can now send proactive messages through Superchat channels — not just respond to incoming messages.
+Agents can now reach out first — sending proactive messages through connected channels instead of only responding to incoming messages.
 
 ## Improvements
 
-- **Agent Skills** — Better error handling for skill configuration requirements
-- **Channel Login** — Enhanced error handling and user feedback
-- **Navigation** — Agent navbar reordered: Overview → Workspace → Payment → Persona → Configure → Channels → Skills → Knowledge
-- **Per-Agent Analytics** — Analytics filtering per individual agent
+- Better error handling when configuring agent skills
+- Improved feedback during channel login
+- Agent navigation reordered for faster access: Overview → Workspace → Payment
+- Per-agent analytics filtering
 
 ## Coming Soon
 
-- **Virtual Card** — Sponge-powered virtual debit card per agent for real-world purchases
+- **Virtual Debit Card** — A real card per agent for online purchases, anywhere cards are accepted
