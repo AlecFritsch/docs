@@ -1,0 +1,68 @@
+---
+title: "February 21, 2026"
+description: "Introducing Agentic Payments via Sponge Wallet, Team Invitations, OpenClaw Fork, Superchat proactive messaging."
+---
+
+## Introducing Agentic Payments
+
+Every agent now gets its own crypto wallet — auto-provisioned on deploy via [Sponge](https://paysponge.com). Agents can autonomously pay for services, process checkouts, and manage funds across multiple chains.
+
+### Supported Chains
+Ethereum, Base, Polygon, Solana, Sepolia, Base-Sepolia, Solana-Devnet, Hyperliquid
+
+### Payment Page
+New dedicated `/agents/:id/payment` page in the agent dashboard:
+- **Wallet Card** — Live balance display with chain breakdown and wallet address
+- **Fund Wallet** — Top up via Sponge claim URL or by sending crypto directly to the wallet address
+- **Copy Address** — One-click copy of the agent's wallet address
+- **Transaction History** — Recent transactions with status, chain, and amount
+- **Checkout Log** — All agent-initiated checkouts (e.g. Amazon purchases)
+- **Service Discovery** — Browse x402-compatible services the agent can pay for
+
+### Backend
+- `GET /api/sponge/balance` — Wallet balances per chain
+- `GET /api/sponge/history` — Transaction history
+- `GET /api/sponge/checkouts` — Checkout history
+- `GET /api/sponge/services` — x402 service discovery
+- Wallet auto-registered on agent deploy, reused on redeploy
+- `sponge-wallet` skill auto-enabled in OpenClaw gateway via ClawHub
+
+## Team Invitations
+
+Invite team members to your organization via email, powered by Resend.
+
+- Send invitations from the Organization page
+- Invitees receive an email with a one-click accept link
+- Revoke pending invitations at any time
+- Backend routes: `POST /api/invitations`, `POST /api/invitations/:id/accept`, `DELETE /api/invitations/:id`
+
+## OpenClaw Fork — Native Docker Support
+
+Migrated from patched OpenClaw to our own fork (`openclaw-fork`) with native Docker support.
+
+- **No more build-time patches** — Device-local pairing and silent auto-approval are now native
+- Docker image existence check and automated build process on deploy
+- Cleaner entrypoint with improved ClawHub skill installation
+- Updated container management via Dockerode
+
+## Superchat Proactive Messaging
+
+Agents can now send proactive messages through Superchat channels — not just respond to incoming messages.
+
+- Internal Superchat webhook routes for agent-to-channel communication
+- Proactive message delivery via `POST /api/internal/superchat/proactive`
+
+## Improvements
+
+- **Agent Skills** — Better error handling for skill configuration requirements
+- **Channel Login** — Enhanced error handling and user feedback
+- **Settings** — Audit tab availability updated
+- **Navigation** — Agent navbar reordered: Overview → Workspace → Payment → Persona → Configure → Channels → Skills → Knowledge
+- **Per-Agent Analytics** — Analytics filtering per individual agent
+
+## Housekeeping
+
+- Removed unused middleware and response schemas
+- Removed obsolete configuration and documentation files
+- Updated package dependencies
+- Updated OpenClaw version and backend environment configuration
